@@ -1,0 +1,80 @@
+import random
+#random.seed()      # seed is not fixed: each execution is unique and non-reproducable
+#random.seed(2017)  # a fixed seed can be useful when experiments shall be reproducable
+
+distMatrix = [
+    [100, 14, 20, 10, 35, 18, 5],
+    [6, 100, 7, 35, 17, 9, 24],
+    [8, 35, 100, 36, 27, 3, 15],
+    [21, 7, 12, 100, 7, 4, 26],
+    [33, 25, 6, 18, 100, 19, 11],
+    [6, 2, 22, 30, 9, 100, 8],
+    [24, 3, 12, 5,17, 16, 100]
+]
+
+def get_total_distance(route, d):
+    """Function calculating the total travel distance of a TSP.
+
+    This function returns the total distance time for a given sequence
+    in which cities should be visited.
+
+    :param list[int] route: The sequence in which cities shall be visited.
+    :param list[float][float] d: The distance matrix.
+    :return: The total travel time
+    """
+    total = 0
+    for i in range(len(route)-1):
+        total += d[route[i]][route[i+1]]
+    return total
+
+
+
+cities = list(range(1,7)) #list(range(1,7)) returns a list of numbers between 1 and 6: [1,2,3,4,5,6]
+for n in range(10):
+    #random.sample(population, k) returns a k-length list of unique elements chosen from the population sequence
+    myroute = [0] + random.sample(cities,6) + [0]
+    #myroute = random.sample(cities,1) 
+    print("The total distance of route", myroute, "is", get_total_distance(myroute, distMatrix))
+print ("Output von range is", cities)
+
+
+def nearest_neighbor(d):
+    """Function solving the TSP using Random-Insertion-heuristic.
+
+    This function applies the Random-Insertion-heuristic to a TSP
+    and returns a sequence. The objective is to minimize the travel distance.
+    :param list[float][float] d: The distance matrix.
+    :return: The route of the salesman.
+    """
+    route = [0]        # tour starts at the depot (= node 0)
+    position = 0       # starting (=current) position is depot
+    numNodes = len(d)  # number of nodes to be visited
+    notVisited = list(range(1, numNodes))  # creates a list of consecutive numbers from 1 to numNodes
+    
+    while len(notVisited) != 0:
+        #bestDistance = np.amax(d)
+        bestDistance = 100000  # initially set best to an arbitrarily high number
+        for j in notVisited: # check all customers not yet visited
+            if (d[position][j] < bestDistance):  # find nearest customer
+                bestDistance = d[position][j]  # if true update best value & best index
+                bestPosition = j
+        position = bestPosition   # update current position
+        notVisited.remove(bestPosition)
+        route.append(bestPosition)
+    route.append(0)  # add depot at the end
+    return route
+
+
+distMatrix = 
+[[100, 14, 20, 10, 35, 18, 5],
+[6, 100, 7, 35, 17, 9, 24],
+[8, 35, 100, 36, 27, 3, 15],
+[21, 7, 12, 100, 7, 4, 26],
+[33, 25, 6, 18, 100, 19, 11],
+[6, 2, 22, 30, 9, 100, 8],
+[24, 3, 12, 5,17, 16, 100]]
+
+
+solution = nearest_neighbor(distMatrix)
+print(solution)
+print(get_total_distance(solution, distMatrix))
