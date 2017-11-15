@@ -1,0 +1,17 @@
+def two_opt(route,d, strategy = "best"):
+    bestroute = route.copy() #define initial best route
+    bestdist = get_total_distance(bestroute, d)
+    r = route.copy()
+    for i in range(0, len(route)-3):
+        for j in range(i+2, len(route)-1):
+            newroute = r[:i+1]+r[j:i:-1] + r[j+1:] #inverses, makes number opposite   
+            newdist = get_total_distance(newroute,d)
+            if newdist < bestdist:
+                    bestdist = newdist
+                    bestroute = newroute.copy()
+                    #print(selected)
+                    #print(r)
+                    #print(newroute)
+                    if strategy == "first":
+                        return bestdist, bestroute    
+    return bestdist, bestroute
