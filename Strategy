@@ -1,0 +1,16 @@
+#for comparing strategies
+incumbent_obj, incumbent_route = mysol.nearest_neighbor()
+print(mysol)
+print("----------------------")
+improvement = True
+while improvement:
+    new_obj, new_route = mysol.two_opt(incumbent_route, "best")
+    if new_obj < incumbent_obj:
+        incumbent_obj = new_obj
+        incumbent_route = new_route.copy() #since it is a list, does not change original incumbent route
+        print(incumbent_obj)
+    else:
+        improvement = False
+mysol.objective = incumbent_obj
+mysol.route = incumbent_route.copy()
+print(mysol)
